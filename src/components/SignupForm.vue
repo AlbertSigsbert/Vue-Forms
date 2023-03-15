@@ -1,5 +1,5 @@
 <template>
-  <form>
+  <form @submit.prevent="handleSubmit">
     <label>Email</label>
     <input type="email" v-model="email" required />
 
@@ -13,9 +13,10 @@
     </select>
 
     <label>Skills:</label>
-    <input type="text" v-model="tempSkill" @keyup="addSkill">
-    <div v-for="skill in skills" :key="skill"  class="pill" >
-      <span @click="deleteSkill(skill)">{{skill}}</span>
+    <small>Press , to add a new skill && click on skill to delete it</small>
+    <input type="text" v-model="tempSkill" @keyup="addSkill" />
+    <div v-for="skill in skills" :key="skill" class="pill">
+      <span @click="deleteSkill(skill)">{{ skill }}</span>
     </div>
 
     <div class="terms">
@@ -23,7 +24,10 @@
       <label>Accept terms & conditions</label>
     </div>
 
-     <!-- <div>
+    <div class="submit">
+      <button>Create Account</button>
+    </div>
+    <!-- <div>
       <input type="checkbox" value="shaun" v-model="names"/>
       <label>Shaun</label>
 
@@ -49,26 +53,36 @@ export default {
       email: "",
       password: "",
       role: "designer",
-      terms:false,
-      tempSkill:"",
-      skills:[]
-    //   names:[]
+      terms: false,
+      tempSkill: "",
+      skills: [],
+      //   names:[]
     };
   },
-  methods:{
-    addSkill(e){
-      if(e.key === ',' && this.tempSkill){
-        const tempSkill = this.tempSkill.slice(0,-1);
-       if (!this.skills.includes(tempSkill)) {
-        this.skills.push(tempSkill)
-       }
-       this.tempSkill = ''
+  methods: {
+    addSkill(e) {
+      if (e.key === "," && this.tempSkill) {
+        const tempSkill = this.tempSkill.slice(0, -1);
+        if (!this.skills.includes(tempSkill)) {
+          this.skills.push(tempSkill);
+        }
+        this.tempSkill = "";
       }
     },
-    deleteSkill(skill){
-        this.skills = this.skills.filter(item => item !== skill)
+    deleteSkill(skill) {
+      this.skills = this.skills.filter((item) => item !== skill);
+    },
+    handleSubmit(){
+        
+        //optional - form Validations
+        console.log('Email: ', this.email);
+        console.log('Password: ', this.password);
+        console.log('Role: ', this.role);
+        console.log('Terms Accepted: ', this.terms);
+        console.log('Skills: ', this.skills);
+        console.log('form submitted');
     }
-  }
+  },
 };
 </script>
 
@@ -91,7 +105,12 @@ label {
   letter-spacing: 1px;
   font-weight: bold;
 }
-
+small {
+  display: block;
+  font-size: 12px;
+  margin: 0;
+  font-weight: 600;
+}
 input,
 select {
   display: block;
@@ -111,16 +130,28 @@ input[type="checkbox"] {
   top: 2px;
 }
 
-.pill{
-    display: inline-block;
-    margin: 20px 10px 0 0;
-    padding: 6px 12px;
-    background: #eee;
-    border-radius: 20px;
-    font-size: 12px;
-    letter-spacing: 1px;
-    font-weight: bold;
-    color: #777;
-    cursor: pointer;
+.pill {
+  display: inline-block;
+  margin: 20px 10px 0 0;
+  padding: 6px 12px;
+  background: #eee;
+  border-radius: 20px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+}
+
+button {
+  background: #0b6dff;
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border-radius: 20px;
+  color: white;
+}
+.submit {
+  text-align: center;
 }
 </style>
